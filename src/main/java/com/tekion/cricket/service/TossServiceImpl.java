@@ -1,7 +1,7 @@
 package com.tekion.cricket.service;
 
-import com.tekion.cricket.models.Matches;
-import com.tekion.cricket.models.Toss;
+import com.tekion.cricket.entity.Matches;
+import com.tekion.cricket.entity.Toss;
 import com.tekion.cricket.repository.MatchesRepository;
 import com.tekion.cricket.repository.TossRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import java.util.Random;
 
 @Service
-public abstract class TossServiceImpl implements TossService{
+public  class TossServiceImpl implements TossService{
     @Autowired
     private TossRepository tossRepository;
     @Autowired
@@ -40,8 +40,6 @@ public abstract class TossServiceImpl implements TossService{
         toss.setMatches(matches);
         tossRepository.save(toss);
         return tossOutcome;
-
-
     }
 
 

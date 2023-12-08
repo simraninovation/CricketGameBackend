@@ -1,10 +1,10 @@
 package com.tekion.cricket.service;
 
-import com.tekion.cricket.models.Matches;
-import com.tekion.cricket.models.Players;
+import com.tekion.cricket.dto.matchrequest.MatchResultDto;
+import com.tekion.cricket.dto.matchrequest.NewMatchDto;
+import com.tekion.cricket.entity.Matches;
 
 public interface MatchesService {
     void save(Matches matches);
-    void performMatch();
-
+    MatchResultDto playTheMatch(NewMatchDto match);
 }

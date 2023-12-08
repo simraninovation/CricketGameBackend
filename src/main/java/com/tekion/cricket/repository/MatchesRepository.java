@@ -1,6 +1,6 @@
 package com.tekion.cricket.repository;
 
-import com.tekion.cricket.models.Matches;
+import com.tekion.cricket.entity.Matches;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

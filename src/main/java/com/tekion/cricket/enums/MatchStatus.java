@@ -1,7 +1,9 @@
 package com.tekion.cricket.enums;
 
+import javax.print.attribute.standard.DateTimeAtCompleted;
+
 public enum MatchStatus {
-    notStartedYet,
-    running,
-    completed
+    NOT_STARTED_YET,
+    RUNNING,
+    COMPLETED
 }

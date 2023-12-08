@@ -1,36 +1,45 @@
 package com.tekion.cricket.controller;
 
-import com.tekion.cricket.models.Players;
+import com.tekion.cricket.entity.Players;
 import com.tekion.cricket.service.PlayerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 
 @RestController
+@RequestMapping("/players")
 public class PlayerController {
-
-   // @Autowired
+    @Autowired
     private PlayerService playerService;
 
-    @PostMapping("/new/player")
-    public String savePlayerDetails(@RequestBody Players players){
-        playerService.save(players);
-        return "Successfully Added Player";
+    @PostMapping("/createPlayer")
+    public ResponseEntity<Players> savePlayerDetails(@RequestBody Players players){
+        Players savedPlayer = playerService.save(players);
+        return new ResponseEntity<>(savedPlayer, HttpStatus.CREATED);
     }
-    @GetMapping("/player/{id}")
-    @ResponseBody
-    public Players getPlayerById(@PathVariable("id") Long Id){
-        return playerService.getPlayerById(Id);
+    @GetMapping("/getPlayerById/{id}")
+    public ResponseEntity<Players> getPlayerById(@PathVariable("id") Long Id){
+        Players playerId = playerService.getPlayerById(Id);
+        return new ResponseEntity<>(playerId, HttpStatus.OK);
+    }
+    @GetMapping("/AllPlayersDetails")
+    public ResponseEntity<List<Players>> getAllTeams() {
+        List<Players> playersDetails = playerService.getAllPlayer();
+        return new ResponseEntity<>(playersDetails, HttpStatus.OK);
     }
 
-    @GetMapping("/team/{teamId}/players")
+    @GetMapping("/{teamId}/players")
     @ResponseBody
-    public List<Players> getTeamPlayer(@PathVariable  Long teamId){
+    public ResponseEntity<List<Players>> getTeamPlayer(@PathVariable  Long teamId){
         List<Players> listOfPlayers = playerService.getTeamPlayer(teamId);
-        return listOfPlayers;
+        return new ResponseEntity<>(listOfPlayers, HttpStatus.OK);
     }
+
+
 
 
 

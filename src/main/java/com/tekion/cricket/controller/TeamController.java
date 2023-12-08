@@ -1,45 +1,42 @@
 package com.tekion.cricket.controller;
 
-import com.tekion.cricket.models.Players;
-import com.tekion.cricket.models.Team;
+import com.tekion.cricket.entity.Players;
+import com.tekion.cricket.entity.Team;
 
+import com.tekion.cricket.service.PlayerService;
 import com.tekion.cricket.service.TeamService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
+@RequestMapping("/team")
 public class TeamController {
     @Autowired
     private TeamService teamService;
-    List<Players> lisOfPlayers = new ArrayList<>();
-    @GetMapping("/teams")
-    public List<Team> getAllTeams(){
-        return teamService.getAllTeams();
+    @Autowired
+    private PlayerService playerService;
+    @PostMapping("/createTeam")
+    public ResponseEntity<Team> createTeam(@RequestBody Team team) {
+        Team savedTeam = teamService.save(team);
+        return new ResponseEntity<>(savedTeam, HttpStatus.CREATED);
     }
-
-    @GetMapping("/team")
-    public Team getAllTeams(@PathVariable String teamName){
-        return teamService.getSpecificTeamByName(teamName);
+    @GetMapping("/allTeams")
+    public ResponseEntity<List<Team>> getAllTeams() {
+        List<Team> teamsDetails = teamService.getAllTeams();
+        return new ResponseEntity<>(teamsDetails, HttpStatus.OK);
     }
-    @GetMapping("/teams/{teamId}")
-    public Team getSpecificTeamById(@PathVariable Long teamId) {
-        return teamService.getSpecificTeamById(teamId);
+    @GetMapping("/specificTeamDetails/{id}")
+    public ResponseEntity<List<Players>> getSpecificTeamById(@PathVariable("id") Long teamId) {
+        List<Players> teamDetailSById = playerService.getSpecificTeamById(teamId);
+        return new ResponseEntity<>(teamDetailSById, HttpStatus.OK);
     }
-
-    @GetMapping("/team/{teamId}/players")
-    @ResponseBody
-    public List<Players> getTeamPlayer(@PathVariable  Long teamId){
-        List<Players> listOfPlayers = teamService.getTeamPlayer(teamId);
-        return listOfPlayers;
-    }
-
-
-    @GetMapping("/specific-team")
-    public Long getSpecificTeamIdByName(@RequestParam(value = "name") String teamName) {
-        return teamService.getSpecificTeamIdByName(teamName);
+    @DeleteMapping("{id}")
+    public ResponseEntity<String> deleteUser(@PathVariable("id") Long teamId) {
+        teamService.deleteTeam(teamId);
+        return new ResponseEntity<>("Team successfully got deleted", HttpStatus.OK);
     }
 }
